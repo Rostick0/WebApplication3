@@ -1,0 +1,24 @@
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace WebApplication3.Models
+{
+    //public enum TypeEnum
+    //{
+    //    Expenses,
+    //    Income
+    //}
+
+    public class Todo
+    {
+        [Key]
+        public int Id { get; private set; }
+        [Required, MaxLength(50)]
+        public string Title { get; set; } = null!;
+        [MaxLength(255)]
+        public string Description { get;  set; } = null!;
+        //[JsonConverter(typeof(StringEnumConverter))]
+        //public TypeEnum Type { get; set; }
+    }
+}
