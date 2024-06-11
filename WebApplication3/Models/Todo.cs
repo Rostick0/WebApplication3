@@ -18,6 +18,8 @@ namespace WebApplication3.Models
         public string Title { get; set; } = null!;
         [MaxLength(255)]
         public string Description { get;  set; } = null!;
+
+        public int UserId { get; private set; }
         //[JsonConverter(typeof(StringEnumConverter))]
         //public TypeEnum Type { get; set; }
     }

@@ -59,23 +59,12 @@ namespace WebApplication3.Controllers
 
         [HttpGet("auth/me")]
         [Authorize]
-        public async Task<ActionResult<UserGet>> Me([FromHeader(Name = "Authorization")] string authorizationHeader)
+        public async Task<ActionResult<UserGet>> Me()
         {
             try
             {
-                var handler = new JwtSecurityTokenHandler();
-
-                var userId = handler
-                    .ReadJwtToken(authorizationHeader
-                    .Substring("Bearer ".Length))
-                    .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
-                var user = await _context.Users.FirstAsync(x => x.Id == int.Parse(userId));
-                var mapper = new Mapper(
-                    new MapperConfiguration(cfg => cfg.CreateMap<User, UserGet>())
-                );
-
-                return mapper.Map<UserGet>(user);
+                string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+                return await JWT.getUser(authorizationHeader, _context);
             }
             catch (Exception)
             {
