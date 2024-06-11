@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using System.Reflection.Metadata;
 using WebApplication3.Models;
 
 namespace WebApplication3.Data
@@ -10,6 +12,14 @@ namespace WebApplication3.Data
 
         public ApiContext(DbContextOptions<ApiContext> options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Todos)
+                .WithOne(e => e.User)
+            .IsRequired();
         }
     }
 }

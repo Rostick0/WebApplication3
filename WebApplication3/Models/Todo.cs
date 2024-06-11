@@ -22,5 +22,16 @@ namespace WebApplication3.Models
         public int UserId { get; private set; }
         //[JsonConverter(typeof(StringEnumConverter))]
         //public TypeEnum Type { get; set; }
+        public virtual User? User { get; }
+
+        public void setUserId(int userId)
+        {
+            this.UserId = userId;
+        }
+    }
+
+    public class TodoPost
+    { 
+
     }
 }
