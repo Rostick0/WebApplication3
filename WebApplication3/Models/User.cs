@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using WebApplication3.Utils;
 
 namespace WebApplication3.Models
 {
-    public class User
+    public class User: DateMutation
     {
         [Key]
         public int Id { get;private set; }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PagedList;
 
 namespace WebApplication3.Utils
 {

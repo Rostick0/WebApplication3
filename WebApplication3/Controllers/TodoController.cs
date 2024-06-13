@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PagedList;
 using WebApplication3.Data;
 using WebApplication3.Models;
 using WebApplication3.Utils;

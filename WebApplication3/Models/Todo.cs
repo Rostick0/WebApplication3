@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using WebApplication3.Utils;
 
 namespace WebApplication3.Models
 {
@@ -10,7 +11,7 @@ namespace WebApplication3.Models
     //    Income
     //}
 
-    public class Todo
+    public class Todo: DateMutation
     {
         [Key]
         public int Id { get; private set; }

@@ -59,7 +59,6 @@ namespace WebApplication3.Controllers
                         {
                             resizedImage.Save(ms, ImageHelper.getImageFormat(filePath));
 
-                            //return Image.FromStream(ms);
                             return new FileContentResult(ms.ToArray(), MimeKit.MimeTypes.GetMimeType(fileName));
                         }
                     }
