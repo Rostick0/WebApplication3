@@ -1,17 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using WebApplication3.Utils;
 
 namespace WebApplication3.Models
 {
-    //public enum TypeEnum
+    //public static class ValidationAttributesTodoo
     //{
-    //    Expenses,
-    //    Income
+    //    [Required, MaxLength(50)]
+    //    public static PropertyAttributes Title { get; } = new PropertyAttributes();
     //}
 
-    public class Todo: DateMutation
+    //public class ValidationUser
+    //{
+    //    [Required, MaxLength(50)]
+    //    public string Title { get; set; } = null!;
+    //}
+
+    public enum TypeTodoEnum
+    {
+        [Display(Name = "Expenses")] 
+        Expenses,
+        [Display(Name = "Income")] 
+        Income
+    }
+
+    public class Todo: UserBelongWithDateMutation
     {
         [Key]
         public int Id { get; private set; }
@@ -20,19 +35,29 @@ namespace WebApplication3.Models
         [MaxLength(255)]
         public string Description { get;  set; } = null!;
 
-        public int UserId { get; private set; }
         //[JsonConverter(typeof(StringEnumConverter))]
-        //public TypeEnum Type { get; set; }
-        public virtual User? User { get; }
-
-        public void setUserId(int userId)
-        {
-            this.UserId = userId;
-        }
+        public TypeTodoEnum Type { get; set; }
+        
     }
 
-    public class TodoPost
-    { 
 
+    public class TodoCreate: UserBelongWithDateMutation
+    { 
+        [Key]
+        public int Id { get; private set; }
+        [Required, MaxLength(50)]
+        public string Title { get; set; } = null!;
+        [MaxLength(255)]
+        public string Description { get;  set; } = null!;
+        public TypeTodoEnum Type { get; set; }
+    }
+
+    public class TodoUpdate : UserBelongWithDateMutationUpdated
+    {
+        [Required, MaxLength(50)]
+        public string Title { get; set; } = null!;
+        [MaxLength(255)]
+        public string Description { get; set; } = null!;
+        public TypeTodoEnum Type { get; set; }
     }
 }

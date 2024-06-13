@@ -49,7 +49,7 @@ namespace WebApplication3.Controllers
         {
             userRequest.Password = SecretHasher.Hash(userRequest.Password);
             var user = await _context.Users.AddAsync(userRequest);
-            //_context.Entry(comment).CurrentValues.SetValues(comment);
+
             await _context.SaveChangesAsync();
 
             var token = JWT.generate(userRequest.Email, userRequest.Id);

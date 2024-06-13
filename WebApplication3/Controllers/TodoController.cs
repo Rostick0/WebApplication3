@@ -29,14 +29,16 @@ namespace WebApplication3.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<Todo> Create(Todo todo)
+        public async Task<Todo> Create(TodoCreate todoCreate)
         {
             string? authorizationHeader = HttpContext.Request.Headers.Authorization;
             UserGet user = await JWT.getUser(authorizationHeader, _context);
-            todo.setUserId(
+            todoCreate.setUserId(
                 user.Id
             );
-           
+
+            Todo todo = MapperShort.get<TodoCreate, Todo>(todoCreate);
+
             await _context.Todos.AddAsync(todo);
             await _context.SaveChangesAsync();
 
