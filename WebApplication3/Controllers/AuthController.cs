@@ -12,16 +12,11 @@ using WebApplication3.Utils;
 namespace WebApplication3.Controllers
 {
     [ApiController]
-    public class AuthController: ControllerBase
+    public class AuthController(ApiContext context) : ControllerBase
     {
-        private readonly ApiContext _context;
+        private readonly ApiContext _context = context;
 
-        public AuthController(ApiContext context)
-        {
-            _context = context;
-        }
-
-        [HttpPost("auth/login")]
+        [HttpPost("Auth/Login")]
         public async Task<ActionResult<AuthResult>> Login(UserLogin userLogin)
         {
             var error = new { Message = "The email or password is incorrect" };
@@ -35,7 +30,7 @@ namespace WebApplication3.Controllers
                     return BadRequest(error);
                 }
 
-                var token = JWT.generate(user.Email, user.Id);
+                var token = JWT.Generate(user.Email, user.Id);
 
                 return new AuthResult { User = user, Token = token };
             }
@@ -44,27 +39,27 @@ namespace WebApplication3.Controllers
             }
         }
 
-        [HttpPost("auth/register")]
+        [HttpPost("Auth/Register")]
         public async Task<ActionResult<AuthResult>> Register(User userRequest)
         {
             userRequest.Password = SecretHasher.Hash(userRequest.Password);
-            var user = await _context.Users.AddAsync(userRequest);
+            await _context.Users.AddAsync(userRequest);
 
             await _context.SaveChangesAsync();
 
-            var token = JWT.generate(userRequest.Email, userRequest.Id);
+            var token = JWT.Generate(userRequest.Email, userRequest.Id);
 
             return new AuthResult { User = userRequest, Token = token };
         }
 
-        [HttpGet("auth/me")]
+        [HttpGet("Auth/Me")]
         [Authorize]
         public async Task<ActionResult<UserGet>> Me()
         {
             try
             {
                 string? authorizationHeader = HttpContext.Request.Headers.Authorization;
-                return await JWT.getUser(authorizationHeader, _context);
+                return await JWT.GetUser(authorizationHeader, _context);
             }
             catch (Exception)
             {

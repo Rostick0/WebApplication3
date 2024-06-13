@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using WebApplication2.Abstracts;
 using WebApplication3.Utils;
 
 namespace WebApplication3.Models
@@ -40,7 +41,11 @@ namespace WebApplication3.Models
         
     }
 
+    public class TodoIndex: QueryParams
+    {
 
+    }
+    
     public class TodoCreate: UserBelongWithDateMutation
     { 
         [Key]

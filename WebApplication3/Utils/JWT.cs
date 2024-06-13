@@ -18,7 +18,7 @@ namespace WebApplication3.Utils
         //    _context = context;
         //}
 
-        public static string generate(string email, int id)
+        public static string Generate(string email, int id)
         {
             JwtOptions jwtOptions = new();
             
@@ -27,8 +27,8 @@ namespace WebApplication3.Utils
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey));
 
             var claims = new Claim[]{
-                new Claim(ClaimTypes.NameIdentifier, id.ToString()),
-                new Claim(ClaimTypes.Email, email),
+                new(ClaimTypes.NameIdentifier, id.ToString()),
+                new(ClaimTypes.Email, email),
                 };
 
             
@@ -42,7 +42,7 @@ namespace WebApplication3.Utils
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public static async Task<UserGet> getUser(string authorizationHeader, ApiContext context)
+        public static async Task<UserGet> GetUser(string authorizationHeader, ApiContext context)
         {
             var handler = new JwtSecurityTokenHandler();
 

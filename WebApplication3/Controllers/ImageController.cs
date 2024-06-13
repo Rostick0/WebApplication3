@@ -9,15 +9,10 @@ namespace WebApplication3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageController: ControllerBase
+    public class ImageController(ApiContext context) : ControllerBase
     {
-        private readonly ApiContext _context;
+        private readonly ApiContext context = context;
         private readonly string pathStorageImage = Path.Combine("Resources", "Upload", "Images");
-
-        public ImageController(ApiContext context)
-        {
-            _context = context;
-        }
 
         [HttpPost]
         public async Task<ActionResult<string>> Create(IFormFile file)
@@ -46,7 +41,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpGet("{year}/{month}/{day}/{fileName}")]
-        public async Task<ActionResult> get(string year, string month, string day, string fileName, int? w, int? h)
+        public ActionResult Get(string year, string month, string day, string fileName, int? w, int? h)
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), this.pathStorageImage, year, month, day, fileName);
             try

@@ -7,7 +7,7 @@ namespace WebApplication3.Utils
         public int UserId { get; private set; }
         public virtual User? User { get; private set; }
 
-        public void setUserId(int userId)
+        public void SetUserId(int userId)
         {
             this.UserId = userId;
         }
@@ -18,7 +18,7 @@ namespace WebApplication3.Utils
         public int UserId { get; private set; }
         public virtual User? User { get; private set; }
 
-        public void setUserId(int userId)
+        public void SetUserId(int userId)
         {
             this.UserId = userId;
         }
@@ -29,7 +29,7 @@ namespace WebApplication3.Utils
         public int UserId { get; private set; }
         public virtual User? User { get; private set; }
 
-        public void setUserId(int userId)
+        public void SetUserId(int userId)
         {
             this.UserId = userId;
         }
