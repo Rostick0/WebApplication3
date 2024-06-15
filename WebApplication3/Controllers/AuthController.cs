@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Request;
 using WebApplication3.Result;
 using WebApplication3.Utils;
 

@@ -4,7 +4,7 @@ namespace WebApplication3.Utils
 {
     public class DataResult<T>
     {
-        public async Task<DataResult<T>> asyncInit(IQueryable<T> data, int pageNumber, int pageSize)
+        public async Task<DataResult<T>> AsyncInit(IQueryable<T> data, int pageNumber = 1, int pageSize = 20)
         {
             this.Count = await data.CountAsync();
             this.LastPage = (int)Math.Ceiling((decimal)Count / (pageNumber * pageSize));
@@ -12,7 +12,7 @@ namespace WebApplication3.Utils
 
             return this;
         }
-        public List<T> Data { get; private set; } = new List<T>();
+        public List<T> Data { get; private set; } = new();
         public int? Count { get; private set; }
         public int? LastPage { get; private set; }
     }

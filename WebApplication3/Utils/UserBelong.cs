@@ -13,6 +13,17 @@ namespace WebApplication3.Utils
         }
     }
 
+    public class UserBelongWithDateGetter : DateGetter
+    {
+        public int UserId { get; private set; }
+        public virtual User? User { get; private set; }
+
+        public void SetUserId(int userId)
+        {
+            this.UserId = userId;
+        }
+    }
+
     public class UserBelongWithDateMutation: DateMutation
     {
         public int UserId { get; private set; }

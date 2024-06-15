@@ -6,18 +6,12 @@ using System.Security.Claims;
 using System.Text;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Request;
 
 namespace WebApplication3.Utils
 {
     public class JWT
     {
-        //private readonly ApiContext _context;
-
-        //public JWT(ApiContext context)
-        //{
-        //    _context = context;
-        //}
-
         public static string Generate(string email, int id)
         {
             JwtOptions jwtOptions = new();
@@ -29,10 +23,9 @@ namespace WebApplication3.Utils
             var claims = new Claim[]{
                 new(ClaimTypes.NameIdentifier, id.ToString()),
                 new(ClaimTypes.Email, email),
-                };
+            };
 
-            
-            var token = new JwtSecurityToken(
+            JwtSecurityToken token = new(
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
@@ -52,7 +45,7 @@ namespace WebApplication3.Utils
             .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
             var user = await context.Users.FirstAsync(x => x.Id == int.Parse(userId));
-            var mapper = new Mapper(
+            Mapper mapper = new (
                 new MapperConfiguration(cfg => cfg.CreateMap<User, UserGet>())
             );
 

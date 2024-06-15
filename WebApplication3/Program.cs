@@ -15,13 +15,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//var jwtOptions = builder.Configuration
-//    .GetSection("JwtOptions")
-//    .Get<JwtOptions>();
 
 var jwtOptions = new JwtOptions();
-
-//builder.Services.AddSingleton(jwtOptions);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opts =>
@@ -56,15 +51,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-//app.MapGet("/", () => "Hello World!");
-//app.MapGet("/public", () => "Public Hello World!")
-//    .AllowAnonymous();
-
-//app.MapGet("/private", () => "Private Hello World!")
-//    .RequireAuthorization();
-
-//app.MapPost("/tokens/connect", (HttpContext ctx, JwtOptions jwtOptions)
-//    => TokenEndpoint.Connect(ctx, jwtOptions));
 
 app.Run();

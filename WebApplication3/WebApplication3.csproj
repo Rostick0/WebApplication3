@@ -27,7 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Resources\Public\Category\" />
   </ItemGroup>
 
 </Project>

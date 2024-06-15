@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Reflection.Metadata;
 using WebApplication3.Models;
 
 namespace WebApplication3.Data
@@ -9,6 +7,8 @@ namespace WebApplication3.Data
     {
         public DbSet<Todo> Todos { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public ApiContext(DbContextOptions<ApiContext> options) : base(options)
         {
@@ -20,6 +20,27 @@ namespace WebApplication3.Data
                 .HasMany(e => e.Todos)
                 .WithOne(e => e.User)
             .IsRequired();
+
+            // modelBuilder.Entity<Category>()
+            //    .HasMany(e => e.Todos)
+            //    .WithOne(e => e.Category)
+            //.IsRequired();
+
+            modelBuilder.Entity<Todo>()
+               .HasOne(e => e.Category)
+               .WithMany(e => e.Todos)
+               .HasForeignKey(x => x.CategoryId)
+           .IsRequired();
+
+            modelBuilder.Entity<Todo>()
+             .Property(x => x.Type)
+             .HasConversion(
+                 r => r.ToString(),
+                 r => (TypeTodoEnum)Enum.Parse(typeof(TypeTodoEnum), r));
+
+            modelBuilder.Entity<Category>().HasData(
+                new { Title = "Продукты" }
+            );
         }
     }
 }
