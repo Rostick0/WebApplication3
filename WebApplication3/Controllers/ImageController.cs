@@ -51,7 +51,7 @@ namespace WebApplication3.Controllers
             ImageOptimizer optimizer = new();
             optimizer.Compress(filePathWithDirectory);
 
-            Models.Image image = new Models.Image { Name = originalFileName, Path = urlPath };
+            Models.Image image = new (){ Name = originalFileName, Path = urlPath };
             await _context.Images.AddAsync(image);
 
             return image;

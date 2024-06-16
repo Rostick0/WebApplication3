@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Policies;
 using WebApplication3.Request;
 using WebApplication3.Utils;
 
@@ -13,7 +15,7 @@ namespace WebApplication3.Controllers
         private readonly ApiContext _context = context;
 
         [HttpGet("Period")]
-        public async Task<DataResult<TodoPeriodView>> Get([FromQuery] TodoIndexPeriod todoIndexPeriod, string? title)
+        public async Task<DataResult<TodoPeriodView>> Get([FromQuery] TodoIndexPeriod todoIndexPeriod)
         {
             IQueryable<Todo> dataInit = _context.Todos;
 
@@ -33,16 +35,25 @@ namespace WebApplication3.Controllers
         }
 
         [HttpGet]
-        public async Task<DataResult<Todo>> Get([FromQuery] TodoIndex? todoIndex, string? title)
+        public async Task<DataResult<Todo>> Get([FromQuery] TodoIndex? todoIndex)
         {
-            IQueryable<Todo> data = _context.Todos;
+            IQueryable<Todo> dataInit = _context.Todos;
+
+            if (todoIndex?.Title != null)
+            {
+                dataInit = dataInit.Where(x => x.Title.Contains(todoIndex.Title));
+            }
+
+            dataInit = dataInit.OrderByDescending(x => x.Id);
+
+            IQueryable<Todo> data = dataInit;
 
             return await new DataResult<Todo>().AsyncInit(data, todoIndex.Page, todoIndex.Limit);
         }
 
         //[Authorize]
         [HttpPost]
-        public async Task<Todo> Create(TodoCreate todoCreate)
+        public async Task<ActionResult<Todo>> Create(TodoCreate todoCreate)
         {
             string? authorizationHeader = HttpContext.Request.Headers.Authorization;
             //UserGet user = await JWT.GetUser(authorizationHeader, _context);
@@ -57,6 +68,57 @@ namespace WebApplication3.Controllers
             await _context.SaveChangesAsync();
 
             return todo;
+        }
+
+        [Authorize]
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Todo>> Update(TodoUpdate todoUpdate, int id)
+        {
+            var inDb = await _context.Todos.FindAsync(id);
+
+            if (inDb == null) return NotFound();
+
+            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+            User user = await JWT.GetuserAllInfo(authorizationHeader, _context);
+
+            if (!TodoPolicy.Update(user, inDb))
+            {
+                BadRequestObjectResult badRequest = BadRequest(new { Message = "No access" });
+                badRequest.StatusCode = 403;
+
+                return badRequest;
+            }
+
+            _context.Entry(inDb).CurrentValues.SetValues(todoUpdate);
+
+            await _context.SaveChangesAsync();
+
+            return inDb;
+        }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Todo>> Delete(int id)
+        {
+            var inDb = await _context.Todos.FindAsync(id);
+
+            if (inDb == null) return NotFound();
+
+            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+            User user = await JWT.GetuserAllInfo(authorizationHeader, _context);
+
+            if (!TodoPolicy.Delete(user, inDb))
+            {
+                BadRequestObjectResult badRequest = BadRequest(new { Message = "No access" });
+                badRequest.StatusCode = 403;
+
+                return badRequest;
+            }
+
+            _context.Todos.Remove(inDb);
+            await _context.SaveChangesAsync();
+
+            return inDb;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApplication2.Abstracts;
 using WebApplication3.Models;
 using WebApplication3.Utils;
 
@@ -9,28 +8,28 @@ namespace WebApplication3.Request
     //{
     //}
 
-    public class TodoPeriodView : UserBelongWithDateGetter
+    public class TodoPeriodView(Todo todo): UserBelongWithDateGetter
     {
-        public int Id { get; private set; }
-        public string Title { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public int Id { get; private set; } = todo.Id;
+        public string Title { get; set; } = todo.Title;
+        public string? Description { get; set; } = todo.Description;
 
-        public TypeTodoEnum Type { get; set; }
-        public float Sum { get; set; }
+        public TypeTodoEnum Type { get; set; } = todo.Type;
+        public float Sum { get; set; } = todo.Sum;
         public float Total { get; set; }
-        public int CategoryId { get; set; }
-        public virtual Category? Category { get; private set; }
+        public int CategoryId { get; set; } = todo.CategoryId;
+        public virtual Category? Category { get; private set; } = todo.Category;
 
-        public TodoPeriodView(Todo todo)
-        {
-            this.Equals(MapperShort.Get<Todo, TodoPeriodView>(todo));
-            //this = MapperShort.Get<Todo, TodoPeriodView>(todo);
-        }
+        //public TodoPeriodView(Todo todo)
+        //{
+        //    this.Equals(MapperShort.Get<Todo, TodoPeriodView>(todo));
+        //    //this = MapperShort.Get<Todo, TodoPeriodView>(todo);
+        //}
     }
 
-    public class TodoIndex : QueryParams
+    public class TodoIndex : PageQueryParams
     {
-
+        public string? Title { get; set; }
     }
 
     public class TodoIndexPeriod : TodoIndex
@@ -46,7 +45,8 @@ namespace WebApplication3.Request
         [Required, MaxLength(50)]
         public string Title { get; set; } = null!;
         [MaxLength(255)]
-        public string Description { get; set; } = null!;
+        public string? Description { get; set; }
+        [EnumDataType(typeof(TypeTodoEnum))]
         public TypeTodoEnum Type { get; set; }
     }
 
@@ -56,6 +56,7 @@ namespace WebApplication3.Request
         public string Title { get; set; } = null!;
         [MaxLength(255)]
         public string Description { get; set; } = null!;
+        [EnumDataType(typeof(TypeTodoEnum))]
         public TypeTodoEnum Type { get; set; }
     }
 }

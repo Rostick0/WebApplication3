@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using WebApplication2.Abstracts;
 using WebApplication3.Utils;
 
 namespace WebApplication3.Models
@@ -21,7 +20,7 @@ namespace WebApplication3.Models
         [Required, MaxLength(50)]
         public string Title { get; set; } = null!;
         [MaxLength(255)]
-        public string Description { get;  set; } = null!;
+        public string? Description { get;  set; }
 
         //[JsonConverter(typeof(StringEnumConverter))]
         [EnumDataType(typeof(TypeTodoEnum))]

@@ -1,31 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApplication2.Abstracts;
 using WebApplication3.Models;
+using WebApplication3.Utils;
 
 namespace WebApplication3.Request
 {
     //public class CategoryRequest
     //{
     //}
-
-    public class CategoryIndex : QueryParams
+    public class CategoryIndex: PageQueryParams
     {
-
+        public string? Title {  get; set; }
+        public TypeTodoEnum? Type {  get; set; }
     }
 
-    public class CategoryView
+    public class CategoryView(Category category)
     {
-        public int Id { get; private set; }
-        public string Title { get; set; } = null!;
-        public TypeTodoEnum Type { get; set; }
-        public string IconUrl { get; set; } = null!;
-
-        public CategoryView(Category category)
-        {
-            Id = category.Id;
-            Title = category.Title;
-            Type = category.Type;
-            IconUrl = category.IconUrl;
-        }
+        public int Id { get; private set; } = category.Id;
+        public string Title { get; set; } = category.Title;
+        public TypeTodoEnum Type { get; set; } = category.Type;
+        public string? IconUrl { get; set; } = category.IconUrl;
     }
 }

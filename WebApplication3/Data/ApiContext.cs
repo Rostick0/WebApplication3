@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication3.Models;
+using WebApplication3.Seeder;
 
 namespace WebApplication3.Data
 {
@@ -21,16 +22,15 @@ namespace WebApplication3.Data
                 .WithOne(e => e.User)
             .IsRequired();
 
-            // modelBuilder.Entity<Category>()
-            //    .HasMany(e => e.Todos)
-            //    .WithOne(e => e.Category)
-            //.IsRequired();
-
-            modelBuilder.Entity<Todo>()
-               .HasOne(e => e.Category)
-               .WithMany(e => e.Todos)
-               .HasForeignKey(x => x.CategoryId)
+            modelBuilder.Entity<Category>()
+               .HasMany(e => e.Todos)
+               .WithOne(e => e.Category)
            .IsRequired();
+
+           // modelBuilder.Entity<Todo>()
+           //    .HasOne(e => e.Category)
+           //    .WithMany(e => e.Todos)
+           //.IsRequired();
 
             modelBuilder.Entity<Todo>()
              .Property(x => x.Type)
@@ -38,9 +38,13 @@ namespace WebApplication3.Data
                  r => r.ToString(),
                  r => (TypeTodoEnum)Enum.Parse(typeof(TypeTodoEnum), r));
 
-            modelBuilder.Entity<Category>().HasData(
-                new { Title = "Продукты" }
-            );
+            modelBuilder.Entity<Category>()
+            .Property(x => x.Type)
+            .HasConversion(
+                r => r.ToString(),
+                r => (TypeTodoEnum)Enum.Parse(typeof(TypeTodoEnum), r));
+
+            DatabaseSeeder.Run(modelBuilder);
         }
     }
 }

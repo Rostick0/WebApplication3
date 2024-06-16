@@ -13,9 +13,18 @@ namespace WebApplication3.Controllers
         private readonly ApiContext _context = context;
 
         [HttpGet]
-        public async Task<DataResult<CategoryView>> Get([FromQuery] CategoryIndex? categoryIndex, string? title)
+        public async Task<DataResult<CategoryView>> Get([FromQuery] CategoryIndex? categoryIndex)
         {
             IQueryable<Category> dataInit = _context.Categories;
+
+            if (categoryIndex?.Title != null) {
+                dataInit = dataInit.Where(x => x.Title.Contains(categoryIndex.Title));
+            }
+
+            if (categoryIndex?.Type != null)
+            {
+                dataInit = dataInit.Where(x => x.Type == categoryIndex.Type);
+            }
 
             IQueryable<CategoryView> data = dataInit.Select(x => new CategoryView(x));
 

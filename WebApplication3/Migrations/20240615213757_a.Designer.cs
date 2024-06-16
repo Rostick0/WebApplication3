@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication3.Data;
 
@@ -11,9 +12,11 @@ using WebApplication3.Data;
 namespace WebApplication3.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240615213757_a")]
+    partial class a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,90 +55,6 @@ namespace WebApplication3.Migrations
                             Id = 1,
                             Title = "Продукты",
                             Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Title = "Кафе",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Title = "Образование",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Title = "Транспорт",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Title = "Дом",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Title = "Досуг",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Title = "Подарки",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Title = "Здоровье",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Title = "Одежда",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Title = "Другое",
-                            Type = "Expenses"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Title = "Зарплата",
-                            Type = "Income"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Title = "Инвестции",
-                            Type = "Income"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Title = "Бизнес",
-                            Type = "Income"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Title = "Процент по вкладу",
-                            Type = "Income"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Title = "Другое",
-                            Type = "Income"
                         });
                 });
 
@@ -187,6 +106,7 @@ namespace WebApplication3.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 

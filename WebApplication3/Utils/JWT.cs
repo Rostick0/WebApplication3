@@ -51,5 +51,17 @@ namespace WebApplication3.Utils
 
             return mapper.Map<UserGet>(user);
         }
-}
+
+        public static async Task<User> GetuserAllInfo(string authorizationHeader, ApiContext context)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            var userId = handler
+                .ReadJwtToken(authorizationHeader
+                .Substring("Bearer ".Length))
+            .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            return await context.Users.FirstAsync(x => x.Id == int.Parse(userId));
+        }
+    }
 }

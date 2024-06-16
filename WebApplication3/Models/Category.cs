@@ -9,7 +9,7 @@ namespace WebApplication3.Models
         [Required, MaxLength(100)]
         public string Title { get; set; } = null!;
         public TypeTodoEnum Type { get; set; }
-        public string IconUrl { get; set; } = null!;
+        public string? IconUrl { get; set; }
         public ICollection<Todo>? Todos { get; }
     }
 }
