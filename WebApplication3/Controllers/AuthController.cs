@@ -9,12 +9,13 @@ using WebApplication3.Utils;
 
 namespace WebApplication3.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthController(ApiContext context) : ControllerBase
     {
         private readonly ApiContext _context = context;
 
-        [HttpPost("Auth/Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<AuthResult>> Login(UserLogin userLogin)
         {
             var error = new { Message = "The email or password is incorrect" };
@@ -29,15 +30,16 @@ namespace WebApplication3.Controllers
                 }
 
                 var token = JWT.Generate(user.Email, user.Id);
+                UserGet userGet = MapperShort.Get<User, UserGet>(user);
 
-                return new AuthResult { User = user, Token = token };
+                return new AuthResult { User = userGet, Token = token };
             }
             catch (Exception) {
                 return BadRequest(error);
             }
         }
 
-        [HttpPost("Auth/Register")]
+        [HttpPost("Register")]
         public async Task<ActionResult<AuthResult>> Register(User userRequest)
         {
             userRequest.Password = SecretHasher.Hash(userRequest.Password);
@@ -46,11 +48,12 @@ namespace WebApplication3.Controllers
             await _context.SaveChangesAsync();
 
             var token = JWT.Generate(userRequest.Email, userRequest.Id);
+            UserGet user = MapperShort.Get<User, UserGet>(userRequest);
 
-            return new AuthResult { User = userRequest, Token = token };
+            return new AuthResult { User = user, Token = token };
         }
 
-        [HttpGet("Auth/Me")]
+        [HttpGet("Me")]
         [Authorize]
         public async Task<ActionResult<UserGet>> Me()
         {

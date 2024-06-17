@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Resources\Public\Category\" />
+    <Folder Include="Observers\" />
   </ItemGroup>
 
 </Project>

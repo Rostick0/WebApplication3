@@ -26,6 +26,8 @@ namespace WebApplication3.Controllers
                 dataInit = dataInit.Where(x => x.Type == categoryIndex.Type);
             }
 
+            //dataInit
+
             IQueryable<CategoryView> data = dataInit.Select(x => new CategoryView(x));
 
             return await new DataResult<CategoryView>().AsyncInit(data, categoryIndex.Page, categoryIndex.Limit);

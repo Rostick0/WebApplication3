@@ -8,7 +8,7 @@ namespace WebApplication3.Request
     //{
     //}
 
-    public class TodoPeriodView(Todo todo): UserBelongWithDateGetter
+    public class TodoView(Todo todo) : UserIdOnlyBelongWithDateGetter
     {
         public int Id { get; private set; } = todo.Id;
         public string Title { get; set; } = todo.Title;
@@ -16,15 +16,13 @@ namespace WebApplication3.Request
 
         public TypeTodoEnum Type { get; set; } = todo.Type;
         public float Sum { get; set; } = todo.Sum;
-        public float Total { get; set; }
         public int CategoryId { get; set; } = todo.CategoryId;
         public virtual Category? Category { get; private set; } = todo.Category;
+    }
 
-        //public TodoPeriodView(Todo todo)
-        //{
-        //    this.Equals(MapperShort.Get<Todo, TodoPeriodView>(todo));
-        //    //this = MapperShort.Get<Todo, TodoPeriodView>(todo);
-        //}
+    public class TodoPeriodView(Todo todo): TodoView(todo)
+    {
+        public float Total { get; set; }
     }
 
     public class TodoIndex : PageQueryParams

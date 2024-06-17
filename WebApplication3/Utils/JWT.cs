@@ -35,9 +35,21 @@ namespace WebApplication3.Utils
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public static int GetUserId (string authorizationHeader)
+        {
+            JwtSecurityTokenHandler handler = new();
+            
+            return int.Parse(
+                handler
+                    .ReadJwtToken(authorizationHeader
+                    .Substring("Bearer ".Length))
+                    .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value
+           );
+        }
+
         public static async Task<UserGet> GetUser(string authorizationHeader, ApiContext context)
         {
-            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityTokenHandler handler = new();
 
             var userId = handler
                 .ReadJwtToken(authorizationHeader

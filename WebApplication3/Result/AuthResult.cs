@@ -1,4 +1,5 @@
 ﻿using WebApplication3.Models;
+using WebApplication3.Request;
 
 namespace WebApplication3.Result
 {
@@ -10,7 +11,7 @@ namespace WebApplication3.Result
         //    this.token = token;
         //}
 
-        public User User { get; init; } = null!;
+        public UserGet User { get; init; } = null!;
         public string Token { get; init; } = null!;
     }
 }

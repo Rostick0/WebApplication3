@@ -10,6 +10,7 @@ namespace WebApplication3.Request
     {
         public int Id { get; private set; }
         public string Email { get; set; } = null!;
+        public float Balance { get; set; } = 0;
     }
 
     public class UserLogin

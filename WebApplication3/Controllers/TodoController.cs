@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Security.Claims;
 using WebApplication3.Data;
 using WebApplication3.Models;
 using WebApplication3.Policies;
@@ -14,10 +16,13 @@ namespace WebApplication3.Controllers
     {
         private readonly ApiContext _context = context;
 
+        [Authorize]
         [HttpGet("Period")]
         public async Task<DataResult<TodoPeriodView>> Get([FromQuery] TodoIndexPeriod todoIndexPeriod)
         {
             IQueryable<Todo> dataInit = _context.Todos;
+
+            dataInit = dataInit.Where(x => x.UserId == JWT.GetUserId(HttpContext.Request.Headers.Authorization));
 
             if (todoIndexPeriod?.DateStart != null)
             {
@@ -34,10 +39,13 @@ namespace WebApplication3.Controllers
             return await new DataResult<TodoPeriodView>().AsyncInit(data, todoIndexPeriod.Page, todoIndexPeriod.Limit);
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<DataResult<Todo>> Get([FromQuery] TodoIndex? todoIndex)
+        public async Task<DataResult<TodoView>> Get([FromQuery] TodoIndex? todoIndex)
         {
             IQueryable<Todo> dataInit = _context.Todos;
+
+            dataInit = dataInit.Where(x => x.UserId == JWT.GetUserId(HttpContext.Request.Headers.Authorization));
 
             if (todoIndex?.Title != null)
             {
@@ -46,20 +54,18 @@ namespace WebApplication3.Controllers
 
             dataInit = dataInit.OrderByDescending(x => x.Id);
 
-            IQueryable<Todo> data = dataInit;
+            IQueryable<TodoView> data = dataInit.Select(x => new TodoView(x));
 
-            return await new DataResult<Todo>().AsyncInit(data, todoIndex.Page, todoIndex.Limit);
+            return await new DataResult<TodoView>().AsyncInit(data, todoIndex.Page, todoIndex.Limit);
         }
 
         //[Authorize]
         [HttpPost]
         public async Task<ActionResult<Todo>> Create(TodoCreate todoCreate)
         {
-            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
-            //UserGet user = await JWT.GetUser(authorizationHeader, _context);
-            //user.Id ??
+            UserGet user = await JWT.GetUser(HttpContext.Request.Headers.Authorization, _context);
             todoCreate.SetUserId(
-                 1
+                 user?.Id ?? 1
             );
 
             Todo todo = MapperShort.Get<TodoCreate, Todo>(todoCreate);
@@ -78,8 +84,7 @@ namespace WebApplication3.Controllers
 
             if (inDb == null) return NotFound();
 
-            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
-            User user = await JWT.GetuserAllInfo(authorizationHeader, _context);
+            User user = await JWT.GetuserAllInfo(HttpContext.Request.Headers.Authorization, _context);
 
             if (!TodoPolicy.Update(user, inDb))
             {
