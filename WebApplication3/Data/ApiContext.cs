@@ -22,15 +22,17 @@ namespace WebApplication3.Data
                 .WithOne(e => e.User)
             .IsRequired();
 
-            modelBuilder.Entity<Category>()
-               .HasMany(e => e.Todos)
-               .WithOne(e => e.Category)
-           .IsRequired();
+            // modelBuilder.Entity<Category>()
+            //    .HasMany(e => e.Todos)
+            //    .WithOne(e => e.Category)
+            //    .HasForeignKey(e => e.CategoryId)
+            //.IsRequired();
 
-           // modelBuilder.Entity<Todo>()
-           //    .HasOne(e => e.Category)
-           //    .WithMany(e => e.Todos)
-           //.IsRequired();
+            modelBuilder.Entity<Todo>()
+               .HasOne(e => e.Category)
+               .WithMany(e => e.Todos)
+               .HasForeignKey(e => e.CategoryId)
+           .IsRequired();
 
             modelBuilder.Entity<Category>()
             .Property(x => x.Type)

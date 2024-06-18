@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using WebApplication3.Utils;
 
@@ -13,11 +14,11 @@ namespace WebApplication3.Models
         public string Title { get; set; } = null!;
         [MaxLength(255)]
         public string? Description { get;  set; }
-
-        //[JsonConverter(typeof(StringEnumConverter))]
         public float Sum { get; set; }
         public int CategoryId { get; set; }
-        public virtual Category? Category { get; private set; }
+        //[System.Text.Json.Serialization.JsonIgnore]
+        [ForeignKey("CategoryId")]
+        public virtual Category Category { get; } = null!;
     }
 
     

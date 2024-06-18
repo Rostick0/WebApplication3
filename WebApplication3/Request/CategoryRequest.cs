@@ -19,5 +19,6 @@ namespace WebApplication3.Request
         public string Title { get; set; } = category.Title;
         public TypeCategoryEnum Type { get; set; } = category.Type;
         public string? IconUrl { get; set; } = category.IconUrl;
+        public string Color { get; set; } = category.Color;
     }
 }

@@ -7,7 +7,8 @@ namespace WebApplication3.Filters
 {
     public class TodoFilter
     {
-        public static IQueryable<Todo> Set(IQueryable<Todo> data, TodoIndex todoIndex, string authorizationHeader)
+        //IQueryable<Todo>
+        public static void Set(ref IQueryable<Todo> data, TodoIndex? todoIndex, string authorizationHeader)
         {
             data = data.Where(x => x.UserId == JWT.GetUserId(authorizationHeader));
 
@@ -36,9 +37,7 @@ namespace WebApplication3.Filters
                 data = data.Where(x => x.Category.Type == todoIndex.TypeCategory);
             }
 
-            //data = data.Include(x => x.Category);
-        
-            return data;
-        }
+            data = data.Include(x => x.Category);
+        }   
     }
 }

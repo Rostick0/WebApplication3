@@ -15,7 +15,7 @@ namespace WebApplication3.Request
         public string? Description { get; set; } = todo.Description;
         public float Sum { get; set; } = todo.Sum;
         public int CategoryId { get; set; } = todo.CategoryId;
-        public virtual Category? Category { get; private set; } = todo.Category;
+        public virtual Category? Category { get; set; } = todo.Category;
     }
 
     public class TodoPeriodView(Todo todo): TodoView(todo)
@@ -31,12 +31,6 @@ namespace WebApplication3.Request
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
     }
-
-    //public class TodoIndexPeriod : PageQueryParams
-    //{
-    //    public DateTime? DateStart { get; set; }
-    //    public DateTime? DateEnd { get; set; }
-    //}
 
     public class TodoCreate : UserBelongWithDateMutation
     {

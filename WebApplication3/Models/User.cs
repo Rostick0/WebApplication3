@@ -15,7 +15,7 @@ namespace WebApplication3.Models
         [IgnoreDataMember]
         public string Password { get; set; } = null!;
         public float Balance { get; private set; } = 0;
-        public ICollection<Todo> Todos { get; } = new List<Todo>();
+        public ICollection<Todo>? Todos { get; } = new List<Todo>();
 
         public void UpdateBalance(float balance)
         {

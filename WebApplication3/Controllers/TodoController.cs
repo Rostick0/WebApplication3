@@ -16,17 +16,15 @@ namespace WebApplication3.Controllers
     {
         private readonly ApiContext _context = context;
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("Period")]
         public async Task<DataResult<TodoPeriodView>> GetPeriod([FromQuery] TodoIndex? todoIndex)
         {
             IQueryable<Todo> dataInit = _context.Todos;
 
-            //dataInit = dataInit.Include(x => x.Category);
             string? authorizationHeader = HttpContext.Request.Headers.Authorization;
-            dataInit = TodoFilter.Set(dataInit, todoIndex, authorizationHeader);
-
-            IQueryable<TodoPeriodView> data = dataInit.GroupBy(x => x.CategoryId).Select(x => new TodoPeriodView(x.First()) { Total = x.Sum(a => a.CategoryId) }).Include(x => x.Category);
+            TodoFilter.Set(ref dataInit, todoIndex, authorizationHeader);
+            IQueryable <TodoPeriodView> data = dataInit.GroupBy(x => x.CategoryId).Select(x => new TodoPeriodView(x.First()) { Total = x.Sum(a => a.CategoryId) });
 
             return await new DataResult<TodoPeriodView>().AsyncInit(data, todoIndex.Page, todoIndex.Limit);
         }
@@ -38,8 +36,8 @@ namespace WebApplication3.Controllers
             IQueryable<Todo> dataInit = _context.Todos;
 
             string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+            TodoFilter.Set(ref dataInit, todoIndex, authorizationHeader);
 
-            dataInit = TodoFilter.Set(dataInit, todoIndex, authorizationHeader);
             dataInit = dataInit.OrderByDescending(x => x.Id);
 
             IQueryable<TodoView> data = dataInit.Select(x => new TodoView(x));

@@ -16,8 +16,6 @@ namespace WebApplication3.Utils
         {
             JwtOptions jwtOptions = new();
             
-            var issuer = jwtOptions.Issuer;
-            var audience = jwtOptions.Audience;
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey));
 
             var claims = new Claim[]{
@@ -26,10 +24,10 @@ namespace WebApplication3.Utils
             };
 
             JwtSecurityToken token = new(
-                issuer: issuer,
-                audience: audience,
+                issuer: jwtOptions.Issuer,
+                audience: jwtOptions.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(60),
+                expires: jwtOptions.ExpirationSeconds,
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(token);

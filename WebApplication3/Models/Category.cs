@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace WebApplication3.Models
 {
@@ -18,6 +19,8 @@ namespace WebApplication3.Models
         public string Title { get; set; } = null!;
         public TypeCategoryEnum Type { get; set; }
         public string? IconUrl { get; set; }
-        public ICollection<Todo>? Todos { get; }
+        public string Color { get; set; } = null!;
+        [System.Text.Json.Serialization.JsonIgnore]
+        public ICollection<Todo>? Todos { get; } = new List<Todo>();
     }
 }
