@@ -32,17 +32,11 @@ namespace WebApplication3.Data
            //    .WithMany(e => e.Todos)
            //.IsRequired();
 
-            modelBuilder.Entity<Todo>()
-             .Property(x => x.Type)
-             .HasConversion(
-                 r => r.ToString(),
-                 r => (TypeTodoEnum)Enum.Parse(typeof(TypeTodoEnum), r));
-
             modelBuilder.Entity<Category>()
             .Property(x => x.Type)
             .HasConversion(
                 r => r.ToString(),
-                r => (TypeTodoEnum)Enum.Parse(typeof(TypeTodoEnum), r));
+                r => (TypeCategoryEnum)Enum.Parse(typeof(TypeCategoryEnum), r));
 
             DatabaseSeeder.Run(modelBuilder);
         }

@@ -1,9 +1,9 @@
 ﻿namespace WebApplication3.Utils
 {
-    public class DateGetter
+    public class DateGetter(DateTime CreatedDate, DateTime LastModifiedDate)
     {
-        public DateTime? CreatedDate { get; protected init; }
-        public DateTime? LastModifiedDate { get; protected init; }
+        public DateTime? CreatedDate { get; protected init; } = CreatedDate;
+        public DateTime? LastModifiedDate { get; protected init; } = LastModifiedDate;
     }
     public class DateMutation
     {

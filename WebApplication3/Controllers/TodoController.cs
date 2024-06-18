@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
+using WebApplication3.Filters;
 using WebApplication3.Models;
 using WebApplication3.Policies;
 using WebApplication3.Request;
@@ -18,25 +18,17 @@ namespace WebApplication3.Controllers
 
         [Authorize]
         [HttpGet("Period")]
-        public async Task<DataResult<TodoPeriodView>> Get([FromQuery] TodoIndexPeriod todoIndexPeriod)
+        public async Task<DataResult<TodoPeriodView>> GetPeriod([FromQuery] TodoIndex? todoIndex)
         {
             IQueryable<Todo> dataInit = _context.Todos;
 
-            dataInit = dataInit.Where(x => x.UserId == JWT.GetUserId(HttpContext.Request.Headers.Authorization));
+            //dataInit = dataInit.Include(x => x.Category);
+            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+            dataInit = TodoFilter.Set(dataInit, todoIndex, authorizationHeader);
 
-            if (todoIndexPeriod?.DateStart != null)
-            {
-                dataInit = dataInit.Where(x => x.CreatedDate >= todoIndexPeriod.DateStart);
-            }
+            IQueryable<TodoPeriodView> data = dataInit.GroupBy(x => x.CategoryId).Select(x => new TodoPeriodView(x.First()) { Total = x.Sum(a => a.CategoryId) }).Include(x => x.Category);
 
-            if (todoIndexPeriod?.DateEnd != null)
-            {
-                dataInit = dataInit.Where(x => x.CreatedDate <= todoIndexPeriod.DateEnd);
-            }
-
-            IQueryable<TodoPeriodView> data = dataInit.GroupBy(x => x.CategoryId).Select(x => new TodoPeriodView(x.First()) { Total = x.Sum(a => a.CategoryId) });
-
-            return await new DataResult<TodoPeriodView>().AsyncInit(data, todoIndexPeriod.Page, todoIndexPeriod.Limit);
+            return await new DataResult<TodoPeriodView>().AsyncInit(data, todoIndex.Page, todoIndex.Limit);
         }
 
         [Authorize]
@@ -45,13 +37,9 @@ namespace WebApplication3.Controllers
         {
             IQueryable<Todo> dataInit = _context.Todos;
 
-            dataInit = dataInit.Where(x => x.UserId == JWT.GetUserId(HttpContext.Request.Headers.Authorization));
+            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
 
-            if (todoIndex?.Title != null)
-            {
-                dataInit = dataInit.Where(x => x.Title.Contains(todoIndex.Title));
-            }
-
+            dataInit = TodoFilter.Set(dataInit, todoIndex, authorizationHeader);
             dataInit = dataInit.OrderByDescending(x => x.Id);
 
             IQueryable<TodoView> data = dataInit.Select(x => new TodoView(x));
@@ -63,9 +51,11 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public async Task<ActionResult<Todo>> Create(TodoCreate todoCreate)
         {
-            UserGet user = await JWT.GetUser(HttpContext.Request.Headers.Authorization, _context);
+            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+            //UserGet user = await JWT.GetUser(authorizationHeader, _context);
+            //user?.Id ??
             todoCreate.SetUserId(
-                 user?.Id ?? 1
+                 1
             );
 
             Todo todo = MapperShort.Get<TodoCreate, Todo>(todoCreate);
@@ -84,7 +74,8 @@ namespace WebApplication3.Controllers
 
             if (inDb == null) return NotFound();
 
-            User user = await JWT.GetuserAllInfo(HttpContext.Request.Headers.Authorization, _context);
+            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+            User user = await JWT.GetuserAllInfo(authorizationHeader, _context);
 
             if (!TodoPolicy.Update(user, inDb))
             {

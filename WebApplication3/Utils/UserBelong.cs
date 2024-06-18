@@ -13,9 +13,9 @@ namespace WebApplication3.Utils
         }
     }
 
-    public class UserIdOnlyBelongWithDateGetter : DateGetter
+    public class UserIdOnlyBelongWithDateGetter(int UserId, DateTime CreatedDate, DateTime LastModifiedDate): DateGetter(CreatedDate, LastModifiedDate)
     {
-        public int UserId { get; private set; }
+        public int UserId { get; private set; } = UserId;
 
         public void SetUserId(int userId)
         {
@@ -23,7 +23,7 @@ namespace WebApplication3.Utils
         }
     }
 
-    public class UserBelongWithDateGetter : UserIdOnlyBelongWithDateGetter
+    public class UserBelongWithDateGetter(int UserId, DateTime CreatedDate, DateTime LastModifiedDate) : UserIdOnlyBelongWithDateGetter(UserId, CreatedDate, LastModifiedDate)
     {
         public virtual User? User { get; private set; }
     }

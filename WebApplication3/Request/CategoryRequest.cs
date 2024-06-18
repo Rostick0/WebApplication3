@@ -10,14 +10,14 @@ namespace WebApplication3.Request
     public class CategoryIndex: PageQueryParams
     {
         public string? Title {  get; set; }
-        public TypeTodoEnum? Type {  get; set; }
+        public TypeCategoryEnum? Type {  get; set; }
     }
 
     public class CategoryView(Category category)
     {
         public int Id { get; private set; } = category.Id;
         public string Title { get; set; } = category.Title;
-        public TypeTodoEnum Type { get; set; } = category.Type;
+        public TypeCategoryEnum Type { get; set; } = category.Type;
         public string? IconUrl { get; set; } = category.IconUrl;
     }
 }

@@ -8,13 +8,11 @@ namespace WebApplication3.Request
     //{
     //}
 
-    public class TodoView(Todo todo) : UserIdOnlyBelongWithDateGetter
+    public class TodoView(Todo todo) : UserIdOnlyBelongWithDateGetter(todo.UserId, todo.CreatedDate, todo.LastModifiedDate)
     {
         public int Id { get; private set; } = todo.Id;
         public string Title { get; set; } = todo.Title;
         public string? Description { get; set; } = todo.Description;
-
-        public TypeTodoEnum Type { get; set; } = todo.Type;
         public float Sum { get; set; } = todo.Sum;
         public int CategoryId { get; set; } = todo.CategoryId;
         public virtual Category? Category { get; private set; } = todo.Category;
@@ -28,13 +26,17 @@ namespace WebApplication3.Request
     public class TodoIndex : PageQueryParams
     {
         public string? Title { get; set; }
-    }
-
-    public class TodoIndexPeriod : TodoIndex
-    {
+        public TypeCategoryEnum? TypeCategory { get; set; }
+        public int? CategoryId { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
     }
+
+    //public class TodoIndexPeriod : PageQueryParams
+    //{
+    //    public DateTime? DateStart { get; set; }
+    //    public DateTime? DateEnd { get; set; }
+    //}
 
     public class TodoCreate : UserBelongWithDateMutation
     {
@@ -44,8 +46,10 @@ namespace WebApplication3.Request
         public string Title { get; set; } = null!;
         [MaxLength(255)]
         public string? Description { get; set; }
-        [EnumDataType(typeof(TypeTodoEnum))]
-        public TypeTodoEnum Type { get; set; }
+        [Required]
+        public float Sum { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
     }
 
     public class TodoUpdate : UserBelongWithDateMutationUpdated
@@ -54,7 +58,9 @@ namespace WebApplication3.Request
         public string Title { get; set; } = null!;
         [MaxLength(255)]
         public string Description { get; set; } = null!;
-        [EnumDataType(typeof(TypeTodoEnum))]
-        public TypeTodoEnum Type { get; set; }
+        [Required]
+        public float Sum { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
     }
 }
