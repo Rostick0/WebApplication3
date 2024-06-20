@@ -11,10 +11,11 @@ namespace WebApplication3.Models
         [Key]
         public int Id { get; private set; }
         [Required, MaxLength(50)]
-        public string Title { get; set; } = null!;
+        public string? Title { get; set; } = null!;
         [MaxLength(255)]
         public string? Description { get;  set; }
         public float Sum { get; set; }
+        public DateOnly Date { get; set; }
         public int CategoryId { get; set; }
         //[System.Text.Json.Serialization.JsonIgnore]
         [ForeignKey("CategoryId")]

@@ -14,6 +14,7 @@ namespace WebApplication3.Request
         public string Title { get; set; } = todo.Title;
         public string? Description { get; set; } = todo.Description;
         public float Sum { get; set; } = todo.Sum;
+        public DateOnly Date { get; set; } = todo.Date;
         public int CategoryId { get; set; } = todo.CategoryId;
         public virtual Category? Category { get; set; } = todo.Category;
     }
@@ -28,8 +29,7 @@ namespace WebApplication3.Request
         public string? Title { get; set; }
         public TypeCategoryEnum? TypeCategory { get; set; }
         public int? CategoryId { get; set; }
-        public DateTime? DateStart { get; set; }
-        public DateTime? DateEnd { get; set; }
+        public DateOnly Date { get; set; }
     }
 
     public class TodoCreate : UserBelongWithDateMutation
@@ -37,11 +37,13 @@ namespace WebApplication3.Request
         [Key]
         public int Id { get; private set; }
         [Required, MaxLength(50)]
-        public string Title { get; set; } = null!;
+        public string? Title { get; set; } = null!;
         [MaxLength(255)]
         public string? Description { get; set; }
         [Required]
         public float Sum { get; set; }
+        [Required]
+        public DateOnly Date { get; set; }
         [Required]
         public int CategoryId { get; set; }
     }
@@ -54,6 +56,8 @@ namespace WebApplication3.Request
         public string Description { get; set; } = null!;
         [Required]
         public float Sum { get; set; }
+        [Required]
+        public DateOnly Date { get; set; }
         [Required]
         public int CategoryId { get; set; }
     }

@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Observers\**" />
+    <Content Remove="Observers\**" />
+    <EmbeddedResource Remove="Observers\**" />
+    <None Remove="Observers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.9.1" />
     <PackageReference Include="Magick.NET.Core" Version="13.9.1" />
@@ -29,7 +36,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Resources\Public\Category\" />
-    <Folder Include="Observers\" />
   </ItemGroup>
 
 </Project>
