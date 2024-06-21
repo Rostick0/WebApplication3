@@ -17,14 +17,14 @@ namespace WebApplication3.Filters
                 data = data.Where(x => x.Title.Contains(todoIndex.Title));
             }
 
-            if (todoIndex?.DateStart != null)
+            if (todoIndex?.MinDate != null)
             {
-                data = data.Where(x => x.CreatedDate >= todoIndex.DateStart);
+                data = data.Where(x => x.Date >= DateOnly.FromDateTime(todoIndex.MinDate));
             }
 
-            if (todoIndex?.DateEnd != null)
+            if (todoIndex?.MaxDate != null)
             {
-                data = data.Where(x => x.CreatedDate <= todoIndex.DateEnd);
+                data = data.Where(x => x.Date <= DateOnly.FromDateTime(todoIndex.MaxDate));
             }
 
             if (todoIndex?.CategoryId != null)
