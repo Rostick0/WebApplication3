@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WebApplication3.Models;
+﻿using WebApplication3.Models;
 using WebApplication3.Utils;
 
 namespace WebApplication3.Request
@@ -29,37 +28,33 @@ namespace WebApplication3.Request
         public string? Title { get; set; }
         public TypeCategoryEnum? TypeCategory { get; set; }
         public int? CategoryId { get; set; }
-        public DateTime MinDate { get; set; }
-        public DateTime MaxDate { get; set; }
+        public DateOnly MinDate { get; set; }
+        public DateOnly MaxDate { get; set; }
     }
 
     public class TodoCreate : UserBelongWithDateMutation
     {
-        [Key]
-        public int Id { get; private set; }
-        [Required, MaxLength(50)]
-        public string? Title { get; set; } = null!;
-        [MaxLength(255)]
+        //[MaxLength(50)]
+        public string? Title { get; set; }
+        //[MaxLength(255)]
         public string? Description { get; set; }
-        [Required]
-        public float Sum { get; set; }
-        [Required]
-        public DateOnly Date { get; set; }
-        [Required]
-        public int CategoryId { get; set; }
+        //[Required, Range(1, 100000000)]
+        //RegularExpression(@" ^\d+(\.\d{1,2})?$")
+        public float? Sum { get; set; } = null!;
+        //[Required]
+        public DateOnly? Date { get; set; } = null!;
+        //[Required]
+        public int? CategoryId { get; set; } = null!;
     }
+
+    
 
     public class TodoUpdate : UserBelongWithDateMutationUpdated
     {
-        [Required, MaxLength(50)]
-        public string Title { get; set; } = null!;
-        [MaxLength(255)]
-        public string Description { get; set; } = null!;
-        [Required]
-        public float Sum { get; set; }
-        [Required]
-        public DateOnly Date { get; set; }
-        [Required]
-        public int CategoryId { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public float? Sum { get; set; } = null!;
+        public DateOnly? Date { get; set; } = null!;
+        public int? CategoryId { get; set; } = null!;
     }
 }

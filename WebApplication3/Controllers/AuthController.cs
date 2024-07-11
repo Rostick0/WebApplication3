@@ -19,7 +19,7 @@ namespace WebApplication3.Controllers
         public async Task<ActionResult<AuthResult>> Login(UserLogin userLogin)
         {
             var error = new { Message = "The email or password is incorrect" };
-
+            
             try
             {
                 var user = await _context.Users.FirstAsync(x => x.Email == userLogin.Email);

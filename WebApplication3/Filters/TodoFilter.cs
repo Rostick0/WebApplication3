@@ -19,12 +19,12 @@ namespace WebApplication3.Filters
 
             if (todoIndex?.MinDate != null)
             {
-                data = data.Where(x => x.Date >= DateOnly.FromDateTime(todoIndex.MinDate));
+                data = data.Where(x => x.Date >= todoIndex.MinDate);
             }
 
             if (todoIndex?.MaxDate != null)
             {
-                data = data.Where(x => x.Date <= DateOnly.FromDateTime(todoIndex.MaxDate));
+                data = data.Where(x => x.Date <= todoIndex.MaxDate);
             }
 
             if (todoIndex?.CategoryId != null)

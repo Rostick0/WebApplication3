@@ -15,7 +15,6 @@ namespace WebApplication3.Models
     {
         [Key]
         public int Id { get; private set; }
-        [Required, MaxLength(100)]
         public string Title { get; set; } = null!;
         public TypeCategoryEnum Type { get; set; }
         public string? IconUrl { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
@@ -45,19 +46,34 @@ namespace WebApplication3.Controllers
             return await new DataResult<TodoView>().AsyncInit(data, todoIndex.Page, todoIndex.Limit);
         }
 
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Todo>> Get(int id)
+        {
+            string? authorizationHeader = HttpContext.Request.Headers.Authorization;
+            User user = await JWT.GetuserAllInfo(authorizationHeader, _context);
+
+            var todo = await _context.Todos.Include(x => x.Category).Where(x => x.Id == id).FirstAsync();
+
+            if (todo == null && todo?.UserId != user.Id) return NotFound();
+
+            return todo;
+        }
+
         //[Authorize]
         [HttpPost]
         public async Task<ActionResult<Todo>> Create(TodoCreate todoCreate)
         {
             string? authorizationHeader = HttpContext.Request.Headers.Authorization;
-            //UserGet user = await JWT.GetUser(authorizationHeader, _context);
+            UserGet user = await JWT.GetUser(authorizationHeader, _context);
+            int userId = user.Id;
             //user?.Id ??
-            todoCreate.SetUserId(
-                 1
-            );
+            //todoCreate
 
             Todo todo = MapperShort.Get<TodoCreate, Todo>(todoCreate);
-
+            todo.SetUserId(
+                userId
+            );
             await _context.Todos.AddAsync(todo);
             await _context.SaveChangesAsync();
 
@@ -82,6 +98,10 @@ namespace WebApplication3.Controllers
 
                 return badRequest;
             }
+
+            todoUpdate.SetUserId(
+                user.Id
+            );
 
             _context.Entry(inDb).CurrentValues.SetValues(todoUpdate);
 
