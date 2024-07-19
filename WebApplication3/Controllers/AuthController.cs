@@ -60,7 +60,7 @@ namespace WebApplication3.Controllers
             try
             {
                 string? authorizationHeader = HttpContext.Request.Headers.Authorization;
-                return await JWT.GetUser(authorizationHeader, _context);
+                return await JWT.GetUserInfo(authorizationHeader, _context);
             }
             catch (Exception)
             {

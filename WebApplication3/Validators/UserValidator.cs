@@ -28,11 +28,7 @@ namespace WebApplication3.Validators
                 .NotNull()
                 .EmailAddress()
                 .MaximumLength(255)
-                .Must((user, email) =>
-                {
-                    //return await _context.Users.FirstAsync(x => x.Email == email, cancellation) == null;
-                    return _context.Users.FirstOrDefault(x => x.Email == email) == null;
-                });
+                .Must((user, email) => _context.Users.FirstOrDefault(x => x.Email == email) == null);
             RuleFor(x => x.Password).NotNull().MinimumLength(8).MaximumLength(255);
         }
     }

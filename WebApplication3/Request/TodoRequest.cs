@@ -34,17 +34,13 @@ namespace WebApplication3.Request
 
     public class TodoCreate : UserBelongWithDateMutation
     {
-        //[MaxLength(50)]
         public string? Title { get; set; }
-        //[MaxLength(255)]
         public string? Description { get; set; }
-        //[Required, Range(1, 100000000)]
-        //RegularExpression(@" ^\d+(\.\d{1,2})?$")
-        public float? Sum { get; set; } = null!;
+        public float Sum { get; set; }
         //[Required]
         public DateOnly? Date { get; set; } = null!;
         //[Required]
-        public int? CategoryId { get; set; } = null!;
+        public int CategoryId { get; set; }
     }
 
     
@@ -53,8 +49,8 @@ namespace WebApplication3.Request
     {
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public float? Sum { get; set; } = null!;
+        public float Sum { get; set; }
         public DateOnly? Date { get; set; } = null!;
-        public int? CategoryId { get; set; } = null!;
+        public int CategoryId { get; set; }
     }
 }

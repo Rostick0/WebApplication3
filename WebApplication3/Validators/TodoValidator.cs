@@ -17,10 +17,9 @@ namespace WebApplication3.Validators
             RuleFor(x => x.Description).MaximumLength(255);
             RuleFor(x => x.Sum).NotNull().InclusiveBetween(1, 100000000);
             RuleFor(x => x.Date).NotNull();
-            RuleFor(x => x.CategoryId).NotNull().Must((category, categoryId) =>
-            {
-                return _context.Categories.FirstOrDefault(x => x.Id == categoryId) != null;
-            });
+            RuleFor(x => x.CategoryId)
+                .NotNull()
+                .Must((category, categoryId) => _context.Categories.FirstOrDefault(x => x.Id == categoryId) != null);
         }
     }
 
@@ -36,10 +35,9 @@ namespace WebApplication3.Validators
             RuleFor(x => x.Description).MaximumLength(255);
             RuleFor(x => x.Sum).NotNull().InclusiveBetween(1, 100000000);
             RuleFor(x => x.Date).NotNull();
-            RuleFor(x => x.CategoryId).NotNull().Must((category, categoryId) =>
-            {
-                return _context.Categories.FirstOrDefault(x => x.Id == categoryId) != null;
-            });
+            RuleFor(x => x.CategoryId)
+                .NotNull()
+                .Must((category, categoryId) => _context.Categories.FirstOrDefault(x => x.Id == categoryId) != null);
         }
     }
 }

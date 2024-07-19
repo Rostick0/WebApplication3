@@ -17,7 +17,7 @@ namespace WebApplication3.Controllers
     {
         private readonly ApiContext _context = context;
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("Period")]
         public async Task<DataResult<TodoPeriodView>> GetPeriod([FromQuery] TodoIndex? todoIndex)
         {
@@ -65,15 +65,17 @@ namespace WebApplication3.Controllers
         public async Task<ActionResult<Todo>> Create(TodoCreate todoCreate)
         {
             string? authorizationHeader = HttpContext.Request.Headers.Authorization;
-            UserGet user = await JWT.GetUser(authorizationHeader, _context);
+            User user = await JWT.GetUser(authorizationHeader, _context);
             int userId = user.Id;
-            //user?.Id ??
-            //todoCreate
 
             Todo todo = MapperShort.Get<TodoCreate, Todo>(todoCreate);
             todo.SetUserId(
                 userId
             );
+            Category category = await context.Categories.FindAsync(todoCreate.CategoryId);
+
+            user.UpdateBalanceWithCategory(todoCreate.Sum, category);
+
             await _context.Todos.AddAsync(todo);
             await _context.SaveChangesAsync();
 
@@ -99,9 +101,13 @@ namespace WebApplication3.Controllers
                 return badRequest;
             }
 
+            Category category = await context.Categories.FindAsync(todoUpdate.CategoryId);
+
             todoUpdate.SetUserId(
                 user.Id
             );
+            user.RemoveCurrentOperationBalance(inDb.Sum, category);
+            user.UpdateBalanceWithCategory(todoUpdate.Sum, category);
 
             _context.Entry(inDb).CurrentValues.SetValues(todoUpdate);
 

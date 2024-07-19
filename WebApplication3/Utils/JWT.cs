@@ -33,28 +33,36 @@ namespace WebApplication3.Utils
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public static int GetUserId (string authorizationHeader)
+        public static int GetUserId (string? authorizationHeader)
         {
             JwtSecurityTokenHandler handler = new();
-            
+            string token = authorizationHeader ?? "";
+
             return int.Parse(
                 handler
-                    .ReadJwtToken(authorizationHeader
+                    .ReadJwtToken(token
                     .Substring("Bearer ".Length))
                     .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value
            );
         }
 
-        public static async Task<UserGet> GetUser(string authorizationHeader, ApiContext context)
+        public static async Task<User> GetUser(string? authorizationHeader, ApiContext context)
         {
             JwtSecurityTokenHandler handler = new();
+            string token = authorizationHeader ?? "";
 
             var userId = handler
-                .ReadJwtToken(authorizationHeader
+                .ReadJwtToken(token
                 .Substring("Bearer ".Length))
             .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            var user = await context.Users.FirstAsync(x => x.Id == int.Parse(userId));
+            return await context.Users.FirstAsync(x => x.Id == int.Parse(userId));
+        }
+
+        public static async Task<UserGet> GetUserInfo(string? authorizationHeader, ApiContext context)
+        {
+            User user = await JWT.GetUser(authorizationHeader, context);
+
             Mapper mapper = new (
                 new MapperConfiguration(cfg => cfg.CreateMap<User, UserGet>())
             );
@@ -62,12 +70,13 @@ namespace WebApplication3.Utils
             return mapper.Map<UserGet>(user);
         }
 
-        public static async Task<User> GetuserAllInfo(string authorizationHeader, ApiContext context)
+        public static async Task<User> GetuserAllInfo(string? authorizationHeader, ApiContext context)
         {
             var handler = new JwtSecurityTokenHandler();
+            string token = authorizationHeader ?? "";
 
             var userId = handler
-                .ReadJwtToken(authorizationHeader
+                .ReadJwtToken(token
                 .Substring("Bearer ".Length))
             .Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
