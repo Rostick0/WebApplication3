@@ -1,5 +1,4 @@
-﻿using FluentValidation.Results;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
@@ -69,6 +68,7 @@ namespace WebApplication3.Controllers
             int userId = user.Id;
 
             Todo todo = MapperShort.Get<TodoCreate, Todo>(todoCreate);
+            
             todo.SetUserId(
                 userId
             );
