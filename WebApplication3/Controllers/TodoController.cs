@@ -118,7 +118,7 @@ namespace WebApplication3.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Todo>> Delete(int id)
+        public async Task<ActionResult<String>> Delete(int id)
         {
             var inDb = await _context.Todos.FindAsync(id);
 
@@ -135,10 +135,12 @@ namespace WebApplication3.Controllers
                 return badRequest;
             }
 
+            Category category = await context.Categories.FindAsync(inDb.CategoryId);
+            user.RemoveCurrentOperationBalance(inDb.Sum, category);
             _context.Todos.Remove(inDb);
             await _context.SaveChangesAsync();
 
-            return inDb;
+            return "Deleted";
         }
     }
 }
