@@ -22,4 +22,4 @@ RUN dotnet publish "./WebApplication3.csproj" -c $BUILD_CONFIGURATION -o /app/pu
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet dev-certs https --trust", "WebApplication3.dll"]
+ENTRYPOINT ["dotnet", "WebApplication3.dll"]

@@ -8,6 +8,9 @@ services:
       dockerfile: WebApplication3/Dockerfile
     ports:
       - "8080:8080"
+      - "44349:443"
+    volumes:
+      - /etc/letsencrypt/:/etc/letsencrypt/
     depends_on:
       - "sql_server"
   sql_server:
