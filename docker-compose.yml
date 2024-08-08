@@ -10,11 +10,11 @@ services:
       - "8080:80"
       - "8081:443"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=https://+:443;http://+:80
     volumes:
       - /etc/letsencrypt/:/etc/letsencrypt/
-      - /etc/nginx/sites-available/3220911-ew88386.twc1:/etc/nginx/conf.d/default.conf
+      - /etc/nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - "sql_server"
   sql_server:
