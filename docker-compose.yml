@@ -19,7 +19,7 @@ services:
       - "1433:1433"
   proxy:
     build:
-      context:  ./nginx
+      context:  .
       dockerfile: Dockerfile
     ports:
       - "8080:80"
