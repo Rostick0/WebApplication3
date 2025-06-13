@@ -86,9 +86,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+} else
+{
+    var scope = app.Services.CreateScope();
+
+    var db = scope.ServiceProvider.GetRequiredService<ApiContext>();
+    db.Database.Migrate();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
